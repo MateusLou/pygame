@@ -3,7 +3,7 @@
 from os import path
 
 DIR_FNT = path.join(path.dirname(__file__), 'referencia', 'assets', 'font')
-DIR_SND = path.join(path.dirname(__file__), 'assets', 'snd')
+DIR_SND = path.dirname(__file__)
 
 # ----- Tela
 LARGURA = 1000

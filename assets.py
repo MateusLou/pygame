@@ -15,9 +15,10 @@ def carregar_recursos():
     recursos = {}
 
     ttf = os.path.join(DIR_FNT, 'PressStart2P.ttf')
-    recursos[FONTE_G] = pygame.font.Font(ttf, 56)
-    recursos[FONTE_M] = pygame.font.Font(ttf, 30)
-    recursos[FONTE_P] = pygame.font.Font(ttf, 13)
+    fonte = ttf if os.path.exists(ttf) else None
+    recursos[FONTE_G] = pygame.font.Font(fonte, 56)
+    recursos[FONTE_M] = pygame.font.Font(fonte, 30)
+    recursos[FONTE_P] = pygame.font.Font(fonte, 13)
 
     recursos[SOM_APITO] = pygame.mixer.Sound(
         os.path.join(DIR_SND, 'apito.wav'))
