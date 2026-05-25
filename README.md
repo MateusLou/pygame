@@ -6,7 +6,7 @@ Jogo de futebol de cabeça para dois jogadores no mesmo teclado, feito em Python
 
 - Mateus Loureiro
 - Francisco Chebib
-- Victor Benneti
+- Victor Benetti
 
 ## Vídeo de apresentação
 
