@@ -61,4 +61,4 @@ python headsoccer.py
 - `sprites.py` — classes `Jogador` e `Bola`.
 - `config.py` — constantes de tela, física, tempos e cores.
 - `assets.py` — carregamento de fontes e sons.
-- `assets/` e `referencia/assets/` — sons e fontes usados no jogo.
+- `assets/` — sons e fontes usados no jogo (`assets/snd/apito.wav`, `assets/font/PressStart2P.ttf`).
