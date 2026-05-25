@@ -3,18 +3,16 @@
 import math
 import pygame
 from config import (
-    LARGURA, Y_CHAO, GRAVIDADE, VEL_PULO, RAIO_JOGADOR,
+    LARGURA, Y_CHAO, GRAVIDADE, VEL_PULO, RAIO_JOGADOR, TOLERANCIA_CHAO,
     RAIO_BOLA, RESTITUICAO_BOLA, ATRITO_BOLA, VEL_MAX_BOLA,
     INTERVALO_CHUTE, RECARGA_PODER_MS, PRETO, BRANCO, AMARELO,
 )
 
 
-class Jogador(pygame.sprite.Sprite):
+class Jogador:
     """Jogador "cabeçudo". A colisão é um círculo (a cabeça)."""
 
     def __init__(self, x, direcao, cor, controles):
-        pygame.sprite.Sprite.__init__(self)
-
         self.raio = RAIO_JOGADOR
         self.cor = cor
         self.direcao = direcao            # +1 olha p/ direita, -1 p/ esquerda
@@ -23,8 +21,8 @@ class Jogador(pygame.sprite.Sprite):
         # (x, y) é o CENTRO da cabeça
         self.x = float(x)
         self.y = float(Y_CHAO - self.raio)
-        self.velx = 0
-        self.vely = 0
+        self.velx = 0.0
+        self.vely = 0.0
 
         self.ultimo_chute = pygame.time.get_ticks()
         self.intervalo_chute = INTERVALO_CHUTE
@@ -35,7 +33,7 @@ class Jogador(pygame.sprite.Sprite):
         self.ultimo_poder = pygame.time.get_ticks() - self.intervalo_poder
 
     def no_chao(self):
-        return self.y >= Y_CHAO - self.raio - 0.5
+        return self.y >= Y_CHAO - self.raio - TOLERANCIA_CHAO
 
     def pe(self):
         # Ponto do "pé", à frente e um pouco abaixo do centro da cabeça
@@ -87,7 +85,7 @@ class Jogador(pygame.sprite.Sprite):
 
         if self.y > Y_CHAO - self.raio:
             self.y = Y_CHAO - self.raio
-            self.vely = 0
+            self.vely = 0.0
 
     def desenhar(self, janela):
         cx, cy, r = int(self.x), int(self.y), self.raio
@@ -129,11 +127,10 @@ class Jogador(pygame.sprite.Sprite):
         pygame.draw.circle(janela, PRETO, (ex + self.direcao * 3, ey), 4)
 
 
-class Bola(pygame.sprite.Sprite):
+class Bola:
     """Bola: gravidade, quica nas paredes/chão e bate na cabeça do jogador."""
 
     def __init__(self):
-        pygame.sprite.Sprite.__init__(self)
         self.raio = RAIO_BOLA
         self.reiniciar()
 

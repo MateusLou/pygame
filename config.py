@@ -22,6 +22,7 @@ GRAVIDADE = 0.8
 VEL_JOGADOR = 6
 VEL_PULO = -16
 RAIO_JOGADOR = 46
+TOLERANCIA_CHAO = 0.5
 
 RAIO_BOLA = 15
 RESTITUICAO_BOLA = 0.72
@@ -43,6 +44,9 @@ CONTAGEM_MS = 3000
 PARTIDA_MS = 120000
 PAUSA_GOL_MS = 1600
 
+# ----- Áudio
+VOLUME_MUSICA = 0.4
+
 # ----- Cores
 BRANCO = (255, 255, 255)
 PRETO = (0, 0, 0)
@@ -57,3 +61,10 @@ REDE = (210, 210, 210)
 # ----- Estados do fluxo da aplicação
 JOGO = 1
 SAIR = 2
+
+# ----- Sub-estados da partida
+CONTAGEM = 0
+JOGANDO = 1
+GOL = 2
+FIM = 3
+ENCERRAR = 4

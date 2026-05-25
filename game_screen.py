@@ -9,6 +9,7 @@ from config import (
     CONTAGEM_MS, PARTIDA_MS, PAUSA_GOL_MS,
     BRANCO, PRETO, VERMELHO, AZUL, VERDE, VERDE_ESCURO, AMARELO, CEU, REDE,
     JOGO, SAIR,
+    CONTAGEM, JOGANDO, GOL, FIM, ENCERRAR,
 )
 from assets import carregar_recursos, FONTE_G, FONTE_M, FONTE_P, SOM_APITO
 from sprites import Jogador, Bola
@@ -76,8 +77,7 @@ def _desenhar_gol(janela, lado):
 
 def _desenhar_campo(janela):
     janela.fill(CEU)
-    pygame.draw.rect(janela, VERDE,
-                     (0, Y_CHAO - 90, LARGURA, ALTURA - (Y_CHAO - 90)))
+    pygame.draw.rect(janela, VERDE, (0, Y_CHAO - 90, LARGURA, 90))
     for i in range(0, LARGURA, 80):
         cor = VERDE_ESCURO if (i // 80) % 2 == 0 else VERDE
         pygame.draw.rect(janela, cor, (i, Y_CHAO, 80, ALTURA - Y_CHAO))
@@ -99,7 +99,7 @@ def tela_jogo(janela):
     relogio = pygame.time.Clock()
     recursos = carregar_recursos()
 
-    # ----- Cria jogadores, bola e grupo de sprites
+    # ----- Cria jogadores e bola
     p1 = Jogador(LARGURA * 0.28, +1, AZUL, {
         'esquerda': pygame.K_a, 'direita': pygame.K_d,
         'pular': pygame.K_w, 'chutar': pygame.K_s,
@@ -113,25 +113,18 @@ def tela_jogo(janela):
     bola = Bola()
     jogadores = [p1, p2]
 
-    todos_sprites = pygame.sprite.Group()
-    todos_sprites.add(p1)
-    todos_sprites.add(p2)
-    todos_sprites.add(bola)
-
     placar = [0, 0]
 
-    # Sub-estados da partida
-    CONTAGEM, JOGANDO, GOL, FIM, ENCERRAR = 0, 1, 2, 3, 4
     estado = CONTAGEM
     saida = JOGO
 
     tempo_jogado_ms = 0
     tick_partida = pygame.time.get_ticks()
     fase_tick = pygame.time.get_ticks()
-    quem_fez_gol = 0
     teclas_pressionadas = {}
 
     # ===== Loop principal =====
+    pygame.mixer.music.play(loops=-1)
     while estado != ENCERRAR:
         relogio.tick(FPS)
         agora = pygame.time.get_ticks()
@@ -194,7 +187,9 @@ def tela_jogo(janela):
                             p.velx -= VEL_JOGADOR
 
         # ----- Atualiza estado
-        todos_sprites.update()
+        p1.update()
+        p2.update()
+        bola.update()
 
         if estado == CONTAGEM:
             # Bola congelada no centro até o "vai"
@@ -212,7 +207,7 @@ def tela_jogo(janela):
 
             topo = Y_CHAO - ALTURA_GOL
 
-            # Travessão dos dois gols
+            # Travessão dos dois gols: quica por cima ou por baixo
             for x0 in (0, LARGURA - LARGURA_GOL):
                 dentro_x = x0 <= bola.x <= x0 + LARGURA_GOL
                 if (dentro_x
@@ -261,7 +256,7 @@ def tela_jogo(janela):
                 p1.x, p1.y = LARGURA * 0.28, Y_CHAO - p1.raio
                 p2.x, p2.y = LARGURA * 0.72, Y_CHAO - p2.raio
                 for p in jogadores:
-                    p.velx = p.vely = 0
+                    p.velx = p.vely = 0.0
                 bola.reiniciar()
                 teclas_pressionadas = {}
                 estado = CONTAGEM
@@ -329,4 +324,5 @@ def tela_jogo(janela):
 
         pygame.display.update()
 
+    pygame.mixer.music.stop()
     return saida
